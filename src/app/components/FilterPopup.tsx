@@ -40,8 +40,8 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
     const [bedrooms, setBedrooms] = useState<string[]>([]);
     const [filtertypes] = useState<string[]>(["Buy", "Rent"]);
     const [locations, setLocations] = useState<string[]>([]);
-    const [sizeOptions, setSizeOptions] = useState<string[]>([]);
-    const [maxSizeOptions, setMaxSizeOptions] = useState<string[]>([]);
+    const [sizeOptions, setSizeOptions] = useState<number[]>([]);
+    const [maxSizeOptions, setMaxSizeOptions] = useState<number[]>([]);
     const furnishingOptions = ["Furnished", "Semi Furnished", "Unfurnished"];
     const [selected, setSelected] = useState("rent");
     const locationInputRef = useRef<HTMLInputElement>(null);
@@ -104,7 +104,7 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
         const size = e.target.value;
         const name = e.target.name as "minSize" | "maxSize";
 
-        const sizeIdx = sizeOptions.findIndex((s) => s === size);
+        const sizeIdx = sizeOptions.findIndex((s) => s === Number(size));
 
         if (sizeIdx !== -1 && name !== "maxSize") {
             const filtered = sizeOptions.slice(sizeIdx);
