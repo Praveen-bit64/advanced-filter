@@ -1,0 +1,30 @@
+ [
+  {
+    "name": "Apartment",
+    "image": "https://via.placeholder.com/150?text=Apartment"
+  },
+  {
+    "name": "Villa",
+    "image": "https://via.placeholder.com/150?text=Villa"
+  },
+  {
+    "name": "Land",
+    "image": "https://via.placeholder.com/150?text=Land"
+  },
+  {
+    "name": "Warehouse",
+    "image": "https://via.placeholder.com/150?text=Warehouse"
+  },
+  {
+    "name": "Office Space",
+    "image": "https://via.placeholder.com/150?text=Office+Space"
+  },
+  {
+    "name": "Building",
+    "image": "https://via.placeholder.com/150?text=Building"
+  },
+  {
+    "name": "Labour Accommodation",
+    "image": "https://via.placeholder.com/150?text=Labour+Accommodation"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "Apartment": ["Studio", "1BR", "2BR", "3BR", "4BR", "5BR+"],
+  "Villa": ["1BR", "2BR", "3BR", "4BR", "5BR", "6BR+"],
+  "Building": ["1 Flat", "2 Flats", "3 Flats", "4 Flats", "5+ Flats"],
+  "Labour Accommodation": ["1 Room", "2 Rooms", "3 Rooms", "4 Rooms", "5+ Rooms"]
+}

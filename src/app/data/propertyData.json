@@ -1,0 +1,222 @@
+[
+  {
+    "image": "/apartment-1.webp",
+    "title": "Modern Apartment in Juffair",
+    "propertyType": "Apartment",
+    "saleType": "Rent",
+    "location": "Juffair",
+    "bedrooms": "2BR",
+    "size": null,
+    "price": 450,
+    "reference": "APT-1001"
+  },
+  {
+    "image": "/villa-1.jpg",
+    "title": "Luxury Villa in Riffa",
+    "propertyType": "Villa",
+    "saleType": "Buy",
+    "location": "Riffa",
+    "bedrooms": "4BR",
+    "size": null,
+    "price": 175000,
+    "reference": "VIL-1002"
+  },
+  {
+    "image": "/land-1.avif",
+    "title": "Spacious Land in Isa Town",
+    "propertyType": "Land",
+    "saleType": "Buy",
+    "location": "Isa Town",
+    "bedrooms": null,
+    "size": 500,
+    "price": 95000,
+    "reference": "LND-1003"
+  },
+  {
+    "image": "/warehouse-1.webp",
+    "title": "Industrial Warehouse in Muharraq",
+    "propertyType": "Warehouse",
+    "saleType": "Rent",
+    "location": "Muharraq",
+    "bedrooms": null,
+    "size": 800,
+    "price": 2500,
+    "reference": "WH-1004"
+  },
+  {
+    "image": "/off-space-1.avif",
+    "title": "Premium Office Space in Manama",
+    "propertyType": "Office Space",
+    "saleType": "Rent",
+    "location": "Manama",
+    "bedrooms": null,
+    "size": 120,
+    "price": 600,
+    "reference": "OFF-1005"
+  },
+  {
+    "image": "/lab-acc-1.jpg",
+    "title": "Affordable Labour Accommodation in Budaiya",
+    "propertyType": "Labour Accommodation",
+    "saleType": "Rent",
+    "location": "Budaiya",
+    "bedrooms": "4 Rooms",
+    "size": null,
+    "price": 1200,
+    "reference": "LAB-1006"
+  },
+  {
+    "image": "/apartment-2.jpeg",
+    "title": "Cozy Apartment in Hamad Town",
+    "propertyType": "Apartment",
+    "saleType": "Buy",
+    "location": "Hamad Town",
+    "bedrooms": "3BR",
+    "size": null,
+    "price": 82000,
+    "reference": "APT-1007"
+  },
+  {
+    "image": "/villa-2.png",
+    "title": "Family Villa in Amwaj Islands",
+    "propertyType": "Villa",
+    "saleType": "Rent",
+    "location": "Amwaj Islands",
+    "bedrooms": "5BR",
+    "size": null,
+    "price": 1100,
+    "reference": "VIL-1008"
+  },
+  {
+    "image": "/land-2.jpg",
+    "title": "Prime Land in Riffa",
+    "propertyType": "Land",
+    "saleType": "Buy",
+    "location": "Riffa",
+    "bedrooms": null,
+    "size": 700,
+    "price": 130000,
+    "reference": "LND-1009"
+  },
+  {
+    "image": "/off-space-2.avif",
+    "title": "Downtown Office in Manama",
+    "propertyType": "Office Space",
+    "saleType": "Buy",
+    "location": "Manama",
+    "bedrooms": null,
+    "size": 300,
+    "price": 220000,
+    "reference": "OFF-1010"
+  },
+  {
+    "image": "/warehouse-2.jpg",
+    "title": "Commercial Warehouse in Muharraq",
+    "propertyType": "Warehouse",
+    "saleType": "Buy",
+    "location": "Muharraq",
+    "bedrooms": null,
+    "size": 1500,
+    "price": 300000,
+    "reference": "WH-1011"
+  },
+  {
+    "image": "/bulding-1.jpg",
+    "title": "Residential Building in Juffair",
+    "propertyType": "Building",
+    "saleType": "Buy",
+    "location": "Juffair",
+    "bedrooms": "3 Flats",
+    "size": null,
+    "price": 400000,
+    "reference": "BLD-1012"
+  },
+  {
+    "image": "/apartment-3.jpeg",
+    "title": "Studio Apartment in Hamad Town",
+    "propertyType": "Apartment",
+    "saleType": "Rent",
+    "location": "Hamad Town",
+    "bedrooms": "Studio",
+    "size": null,
+    "price": 250,
+    "reference": "APT-1013"
+  },
+  {
+    "image": "/villa-3.jpg",
+    "title": "Luxury Villa in Amwaj Islands",
+    "propertyType": "Villa",
+    "saleType": "Buy",
+    "location": "Amwaj Islands",
+    "bedrooms": "6BR",
+    "size": null,
+    "price": 190000,
+    "reference": "VIL-1014"
+  },
+  {
+    "image": "/warehouse-3.jpg",
+    "title": "Storage Warehouse in Isa Town",
+    "propertyType": "Warehouse",
+    "saleType": "Rent",
+    "location": "Isa Town",
+    "bedrooms": null,
+    "size": 1000,
+    "price": 2000,
+    "reference": "WH-1015"
+  },
+  {
+    "image": "/lab-acc-2.jpg",
+    "title": "Spacious Labour Accommodation in Budaiya",
+    "propertyType": "Labour Accommodation",
+    "saleType": "Rent",
+    "location": "Budaiya",
+    "bedrooms": "5 Rooms",
+    "size": null,
+    "price": 1800,
+    "reference": "LAB-1016"
+  },
+  {
+    "image": "/off-space-3.avif",
+    "title": "Executive Office in Manama",
+    "propertyType": "Office Space",
+    "saleType": "Rent",
+    "location": "Manama",
+    "bedrooms": null,
+    "size": 250,
+    "price": 800,
+    "reference": "OFF-1017"
+  },
+  {
+    "image": "/land-3.jpg",
+    "title": "Investment Land in Riffa",
+    "propertyType": "Land",
+    "saleType": "Buy",
+    "location": "Riffa",
+    "bedrooms": null,
+    "size": 650,
+    "price": 145000,
+    "reference": "LND-1018"
+  },
+  {
+    "image": "/apartment-4.jpg",
+    "title": "Modern Apartment in Juffair",
+    "propertyType": "Apartment",
+    "saleType": "Rent",
+    "location": "Juffair",
+    "bedrooms": "1BR",
+    "size": null,
+    "price": 500,
+    "reference": "APT-1019"
+  },
+  {
+    "image": "/vila-4.jpeg",
+    "title": "Beachfront Villa in Amwaj Islands",
+    "propertyType": "Villa",
+    "saleType": "Buy",
+    "location": "Amwaj Islands",
+    "bedrooms": "4BR",
+    "size": null,
+    "price": 160000,
+    "reference": "VIL-1020"
+  }
+]
