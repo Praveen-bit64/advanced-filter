@@ -1,10 +1,13 @@
 "use client";
 
+import { Suspense } from "react";
 import PropertyFilteredPage from "../components/PropertyFilteredPage";
 
 const page = () => {
     return (
-        <PropertyFilteredPage />
+        <Suspense fallback={<div>Loading properties...</div>}>
+            <PropertyFilteredPage />
+        </Suspense>
     );
 }
 
