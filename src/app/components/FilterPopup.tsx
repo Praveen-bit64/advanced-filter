@@ -1,142 +1,150 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion"; // optional for animation
+import { motion } from "framer-motion";
 import getPropertyTypes from "@/app/data/propertyTypes.json";
 import getLocation from "@/app/data/locations.json";
-import getBedrooms from "@/app/data/bedrooms.json"
-import getSize from "@/app/data/size.json"
-import { p, pre, span } from "framer-motion/client";
+import getBedrooms from "@/app/data/bedrooms.json";
+import getSize from "@/app/data/size.json";
 import { useRouter } from "next/navigation";
+
+type PropertyType = {
+    name: string;
+    // Add other properties if they exist in your JSON
+};
 
 type FilterPopupProps = {
     isOpen: boolean;
     onClose: () => void;
 };
 
+type FilterProps = {
+    filterType: string;
+    property: string;
+    furnished: string[];
+    size: {
+        minSize: string | number;
+        maxSize: string | number;
+    };
+    budget: {
+        min: number;
+        max: number;
+        err: boolean;
+    };
+    location?: string[]; // Added as it's used but not in initial state
+};
+
 const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
-    const router = useRouter()
-    const [propertyTypes, setPropertyTypes] = useState(getPropertyTypes);
-    const [bedrooms, setBedrooms] = useState([]);
-    const [filtertypes, setFilterTypes] = useState(["Buy", "Rent"])
-    const [locations, setLocations] = useState([]);
-    const [sizeOptions, setSizeOptions] = useState([]);
-    const [maxSizeOptions, setMaxSizeOptions] = useState([])
+    const router = useRouter();
+    const [propertyTypes, setPropertyTypes] = useState<PropertyType[]>(getPropertyTypes);
+    const [bedrooms, setBedrooms] = useState<string[]>([]);
+    const [filtertypes] = useState<string[]>(["Buy", "Rent"]);
+    const [locations, setLocations] = useState<string[]>([]);
+    const [sizeOptions, setSizeOptions] = useState<string[]>([]);
+    const [maxSizeOptions, setMaxSizeOptions] = useState<string[]>([]);
     const furnishingOptions = ["Furnished", "Semi Furnished", "Unfurnished"];
     const [selected, setSelected] = useState("rent");
-    const locationInputRef = useRef(null);
+    const locationInputRef = useRef<HTMLInputElement>(null);
 
     //for filter 
-    const [filterprops, setFilterProps] = useState({
+    const [filterprops, setFilterProps] = useState<FilterProps>({
         filterType: "Rent",
         property: "Apartment",
         furnished: [],
         size: { minSize: 0, maxSize: 0 },
         budget: { min: 0, max: 0, err: false }
-    })
-
-    console.log(filterprops, 343);
+    });
 
     const [suggLocation, setSuggLocation] = useState(false);
-    const [locationDropDown, setLocationDropDown] = useState([]);
-    const [showMoreProp, setShowMoreProp] = useState(false)
-    const [selectedBedrooms, setSelectedBedrooms] = useState([]);
+    const [locationDropDown, setLocationDropDown] = useState<string[]>([]);
+    const [showMoreProp, setShowMoreProp] = useState(false);
+    const [selectedBedrooms, setSelectedBedrooms] = useState<string[]>([]);
 
     const handleResetFilter = () => {
         setFilterProps((prev) => ({
             ...prev,
             property: "Apartment",
-            location: [],
             furnished: [],
             size: { minSize: 0, maxSize: 0 },
             budget: { min: 0, max: 0, err: false }
-        }))
-        setLocations([])
-        setSelectedBedrooms([])
-    }
-    console.log(getLocation, 43434);
+        }));
+        setLocations([]);
+        setSelectedBedrooms([]);
+    };
 
     useEffect(() => {
-        // Mock data fetching
-        // setPropertyTypes(["Apartment", "Villa", "Land", "Office"]);
-        // setBedrooms(["Studio", "1BR", "2BR", "3BR", "4BR"]);
-        // setLocations(["Manama", "Riffa", "Juffair", "Seef"]);
-        // setSizeOptions(["50", "100", "200", "500", "1000"]);
-    }, []);
-    useEffect(() => {
-        const betrooms = getBedrooms[filterprops.property] || [];
-        const size = getSize[filterprops.property] || [];
-        setBedrooms(betrooms && betrooms.length > 0 ? betrooms : []);
-        setSizeOptions(size && size.length > 0 ? size : []);
-        setMaxSizeOptions(size && size.length > 0 ? size : []);
-        console.log(size);
+        const bedroomsData = getBedrooms[filterprops.property as keyof typeof getBedrooms] || [];
+        const sizeData = getSize[filterprops.property as keyof typeof getSize] || [];
+        setBedrooms(bedroomsData && bedroomsData.length > 0 ? bedroomsData : []);
+        setSizeOptions(sizeData && sizeData.length > 0 ? sizeData : []);
+        setMaxSizeOptions(sizeData && sizeData.length > 0 ? sizeData : []);
     }, [filterprops.property]);
 
     if (!isOpen) return null;
-    const handleFilterType = (e) => {
-        const value = e.target.value
+
+    const handleFilterType = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
         setFilterProps((prev) => ({
             ...prev,
             filterType: value
-        }))
-    }
+        }));
+    };
 
-    const handleLocation = (e) => {
+    const handleLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSuggLocation(true);
-        setLocationDropDown(getLocation.filter(item => (item).toLowerCase().includes(value.toLowerCase())))
-        console.log(locationDropDown);
-    }
-    const handleRemoveTag = (val) => {
-        setLocations((prev) => prev.filter(item => (item).toLowerCase() !== val.toLowerCase()))
-    }
-    const handleSize = (e) => {
-        const size = e.target.value
-        const name = e.target.name
-        console.log("Selected size:", size, name);
-        const sizeIdx = sizeOptions.findIndex((s) => s == size);
+        setLocationDropDown(getLocation.filter(item => item.toLowerCase().includes(value.toLowerCase())));
+    };
+
+    const handleRemoveTag = (val: string) => {
+        setLocations((prev) => prev.filter(item => item.toLowerCase() !== val.toLowerCase()));
+    };
+
+    const handleSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const size = e.target.value;
+        const name = e.target.name as "minSize" | "maxSize";
+
+        const sizeIdx = sizeOptions.findIndex((s) => s === size);
 
         if (sizeIdx !== -1 && name !== "maxSize") {
-            const filtered = sizeOptions.slice(sizeIdx); // keep from sizeIdx to end
+            const filtered = sizeOptions.slice(sizeIdx);
             setMaxSizeOptions(filtered);
-            console.log("Updated maxSizeOptions:", filtered);
-        } else {
-            console.warn("Size not found in sizeOptions:", size);
         }
+
         if (size && name) {
             setFilterProps((prev) => ({
                 ...prev,
                 size: { ...prev.size, [name]: size }
-            }))
+            }));
         }
     };
-    const handleFurnished = (e) => {
+
+    const handleFurnished = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        const isAlreadHad = filterprops.furnished.includes(value)
-        if (isAlreadHad) {
-            setFilterProps(prev => ({
-                ...prev,
-                furnished: [...(prev.furnished.filter(item => item !== value))]
-            }))
-        } else {
-            setFilterProps((prev) => ({
-                ...prev,
-                furnished: [...(prev.furnished || []), value]
-            }));
-        };
-    }
-    const handleBudget = (e) => {
-        const name = e.target.name;
+        const isAlreadyHad = filterprops.furnished.includes(value);
+
+        setFilterProps(prev => ({
+            ...prev,
+            furnished: isAlreadyHad
+                ? prev.furnished.filter(item => item !== value)
+                : [...prev.furnished, value]
+        }));
+    };
+
+    const handleBudget = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const name = e.target.name as "minBudget" | "maxBudget";
         const value = Number(e.target.value);
+
         if (isNaN(value)) return;
-        if (value < filterprops.budget.min) {
+
+        if (name === 'maxBudget' && value < filterprops.budget.min) {
             setFilterProps((prev) => ({
                 ...prev,
                 budget: {
                     ...prev.budget,
                     err: true
                 }
-            }))
+            }));
         } else {
             setFilterProps((prev) => ({
                 ...prev,
@@ -144,8 +152,9 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                     ...prev.budget,
                     err: false
                 }
-            }))
+            }));
         }
+
         setFilterProps((prev) => ({
             ...prev,
             budget: {
@@ -176,21 +185,19 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
         if (selectedBedrooms.length > 0) {
             queryParams.append('beds', selectedBedrooms.join(','));
         } else {
-            queryParams.append('mnsize', minSize);
-            if (maxSize !== 0) queryParams.append('mxsize', maxSize);
+            queryParams.append('mnsize', minSize.toString());
+            if (maxSize !== 0) queryParams.append('mxsize', maxSize.toString());
         }
 
         if (furnished.length > 0) {
             queryParams.append('frnsh', furnished.join(','));
         }
 
-        if (min !== 0) queryParams.append('mnbug', min);
-        if (max !== 0) queryParams.append('mxbug', max);
+        if (min !== 0) queryParams.append('mnbug', min.toString());
+        if (max !== 0) queryParams.append('mxbug', max.toString());
 
         router.push(`/properties?${queryParams.toString()}`);
     };
-
-
 
     return (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center backdrop-blur-sm">
@@ -212,7 +219,6 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Rent / Buy */}
                     <div className="relative">
-
                         <div className="flex justify-center items-center gap-2">
                             {filtertypes.map((option) => (
                                 <div key={option} className="relative flex justify-center items-center">
@@ -240,7 +246,7 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                     <div className="relative">
                         <label className="block text-lg font-medium text-gray-700 mb-1">Select Property</label>
                         <div className="w-full h-full flex justify-start items-center gap-2 flex-wrap">
-                            {showMoreProp && propertyTypes.length > 4 ? propertyTypes.map((type, idx) => {
+                            {showMoreProp && propertyTypes.length > 4 ? propertyTypes.map((type) => {
                                 return (
                                     <React.Fragment key={type.name}>
                                         <input
@@ -263,10 +269,9 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                                         >
                                             {type.name}
                                         </label>
-
                                     </React.Fragment>
                                 );
-                            }) : propertyTypes.slice(0, 4).map((type, idx) => {
+                            }) : propertyTypes.slice(0, 4).map((type) => {
                                 return (
                                     <React.Fragment key={type.name}>
                                         <input
@@ -289,11 +294,15 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                                         >
                                             {type.name}
                                         </label>
-
                                     </React.Fragment>
                                 );
                             })}
-                            <h5 onClick={() => setShowMoreProp(!showMoreProp)} className="cursor-pointer px-3 py-1 rounded underline text-blue-600">Show {`${showMoreProp ? "Less" : "More"}`}...</h5>
+                            <h5
+                                onClick={() => setShowMoreProp(!showMoreProp)}
+                                className="cursor-pointer px-3 py-1 rounded underline text-blue-600"
+                            >
+                                Show {`${showMoreProp ? "Less" : "More"}`}...
+                            </h5>
                         </div>
                     </div>
 
@@ -305,9 +314,9 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
 
                         <div className="w-[70%] border border-slate-300 rounded-lg px-3 py-2 flex flex-wrap gap-2 bg-white">
                             {/* Selected Locations */}
-                            {locations.map((place, idx) => (
+                            {locations.map((place) => (
                                 <div
-                                    key={idx}
+                                    key={place}
                                     className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full shadow-sm"
                                     onClick={() => handleRemoveTag(place)}
                                 >
@@ -326,35 +335,37 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                         </div>
 
                         {/* Dropdown Suggestions */}
-                        {suggLocation && <div className="absolute w-[70%] max-h-[180px] overflow-y-auto bg-white shadow-md rounded-md mt-2 z-20 border border-gray-300">
-                            {locationDropDown.map((loc, idx) => (
-                                <h2
-                                    key={idx}
-                                    className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 cursor-pointer"
-                                    onClick={() => {
-                                        setLocations(prev => prev.includes(loc) ? prev : [...prev, loc]);
-                                        setLocationDropDown([]);
-                                        locationInputRef.current.value = "";
-                                        setSuggLocation(false);
-                                    }}
-                                >
-                                    {loc}
-                                </h2>
-                            ))}
-
-                        </div>}
+                        {suggLocation && (
+                            <div className="absolute w-[70%] max-h-[180px] overflow-y-auto bg-white shadow-md rounded-md mt-2 z-20 border border-gray-300">
+                                {locationDropDown.map((loc) => (
+                                    <h2
+                                        key={loc}
+                                        className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 cursor-pointer"
+                                        onClick={() => {
+                                            setLocations(prev => prev.includes(loc) ? prev : [...prev, loc]);
+                                            setLocationDropDown([]);
+                                            if (locationInputRef.current) {
+                                                locationInputRef.current.value = "";
+                                            }
+                                            setSuggLocation(false);
+                                        }}
+                                    >
+                                        {loc}
+                                    </h2>
+                                ))}
+                            </div>
+                        )}
                     </div>
-
 
                     {/* Bedrooms */}
                     <div className="relative">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
                         <div className="w-full flex flex-wrap gap-2">
-                            {bedrooms.length > 0 ? bedrooms.map((item, idx) => {
+                            {bedrooms.length > 0 ? bedrooms.map((item) => {
                                 const isChecked = selectedBedrooms.includes(item);
 
                                 return (
-                                    <React.Fragment key={idx}>
+                                    <React.Fragment key={item}>
                                         <input
                                             type="checkbox"
                                             name="bedrooms"
@@ -381,38 +392,40 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                         </div>
                     </div>
 
-
                     {/* Size */}
                     <div className="relative ">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Size (SQM)</label>
                         <div className="flex justify-center items-center gap-2">
-                            {sizeOptions.length > 0 ? <div className="w-full flex justify-start items-start flex-col">
-                                <select
-                                    className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                                    onChange={handleSize}
-                                    name="minSize"
-                                >
-                                    {sizeOptions.map((size) => (
-                                        <option key={size} value={size}>
-                                            {size}
-                                        </option>
-                                    ))}
-                                </select>
-
-                                <span className="ml-1 text-red-800">Min</span>
-                            </div> : <p>Not Applicable.</p>}
-                            {maxSizeOptions.length > 0 && <div className="w-full flex justify-start items-start flex-col">
-                                <select
-                                    name="maxSize"
-                                    onChange={handleSize}
-                                    className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 outline-none">
-
-                                    {maxSizeOptions.map((size) => (
-                                        <option key={size} value={size}>{size}</option>
-                                    ))}
-                                </select>
-                                <span className="ml-1 text-red-800">Max</span>
-                            </div>}
+                            {sizeOptions.length > 0 ? (
+                                <div className="w-full flex justify-start items-start flex-col">
+                                    <select
+                                        className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                                        onChange={handleSize}
+                                        name="minSize"
+                                    >
+                                        {sizeOptions.map((size) => (
+                                            <option key={size} value={size}>
+                                                {size}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <span className="ml-1 text-red-800">Min</span>
+                                </div>
+                            ) : <p>Not Applicable.</p>}
+                            {maxSizeOptions.length > 0 && (
+                                <div className="w-full flex justify-start items-start flex-col">
+                                    <select
+                                        name="maxSize"
+                                        onChange={handleSize}
+                                        className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                                    >
+                                        {maxSizeOptions.map((size) => (
+                                            <option key={size} value={size}>{size}</option>
+                                        ))}
+                                    </select>
+                                    <span className="ml-1 text-red-800">Max</span>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -420,13 +433,25 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                     <div className="relative">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Furnishing</label>
                         <div className="w-full flex justify-start items-center gap-2 flex-wrap">
-                            {furnishingOptions.map((item, idx) => {
+                            {furnishingOptions.map((item) => {
                                 return (
-                                    <div key={idx} className="">
-                                        <input type="checkbox" name="furnished" onChange={handleFurnished} id={item} value={item} className="hidden" />
-                                        <label htmlFor={item} className={`cursor-pointer p-2 rounded ${filterprops.furnished.includes(item) ? "bg-blue-600 text-white" : "border-1 border-blue-400 bg-blue-50"}`}>{item}</label>
+                                    <div key={item} className="">
+                                        <input
+                                            type="checkbox"
+                                            name="furnished"
+                                            onChange={handleFurnished}
+                                            id={item}
+                                            value={item}
+                                            className="hidden"
+                                        />
+                                        <label
+                                            htmlFor={item}
+                                            className={`cursor-pointer p-2 rounded ${filterprops.furnished.includes(item) ? "bg-blue-600 text-white" : "border-1 border-blue-400 bg-blue-50"}`}
+                                        >
+                                            {item}
+                                        </label>
                                     </div>
-                                )
+                                );
                             })}
                         </div>
                     </div>
@@ -440,7 +465,7 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                                     type="text"
                                     name="minBudget"
                                     placeholder="Min amount"
-                                    value={filterprops.budget.min}
+                                    value={filterprops.budget.min || ''}
                                     onChange={handleBudget}
                                     className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 outline-none"
                                 />
@@ -451,7 +476,7 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                                 <input
                                     type="text"
                                     name="maxBudget"
-                                    value={filterprops.budget.max}
+                                    value={filterprops.budget.max || ''}
                                     onChange={handleBudget}
                                     placeholder="max amount"
                                     className={`w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 ${!filterprops.budget.err ? 'focus:ring-blue-500' : 'focus:ring-red-500'} outline-none`}
@@ -462,11 +487,15 @@ const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="col-span-1 md:col-span-2 flex  justify-center mt-4 gap-5">
-                        <div className="flex justify-center items-center underline text-blue-500 cursor-pointer" onClick={handleResetFilter}>Reset Filters</div>
+                    <div className="col-span-1 md:col-span-2 flex justify-center mt-4 gap-5">
+                        <div
+                            className="flex justify-center items-center underline text-blue-500 cursor-pointer"
+                            onClick={handleResetFilter}
+                        >
+                            Reset Filters
+                        </div>
                         <button
                             onClick={handleRedirect}
-                            // type="submit"
                             className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg"
                         >
                             🔎 Search Now
