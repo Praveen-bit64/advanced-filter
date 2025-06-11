@@ -9,7 +9,12 @@ import getSize from "@/app/data/size.json"
 import { p, pre, span } from "framer-motion/client";
 import { useRouter } from "next/navigation";
 
-const FilterPopup = ({ isOpen, onClose }) => {
+type FilterPopupProps = {
+    isOpen: boolean;
+    onClose: () => void;
+};
+
+const FilterPopup = ({ isOpen, onClose }: FilterPopupProps) => {
     const router = useRouter()
     const [propertyTypes, setPropertyTypes] = useState(getPropertyTypes);
     const [bedrooms, setBedrooms] = useState([]);
